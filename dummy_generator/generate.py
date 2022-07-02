@@ -82,9 +82,9 @@ if __name__ == "__main__":
     HOUR_WEIGHT = np.array([4, 3, 2, 1, 1, 2, 2, 3, 4, 6, 7, 8, 9, 8, 8, 8, 9, 9,
                             9, 8, 6, 5, 4, 3])
 
-    budapest = gpd.read_file("input/budapest_border.geojson", crs=4326)
+    area = gpd.read_file("input/agglomeration_border.geojson", crs=4326)
 
-    cells = get_cells(budapest.geometry[0])
+    cells = get_cells(area.geometry[0])
     cells.to_csv("dummy_data/cells.csv", index=False)
     cdr = generate_dummy_cdr(cells["cid"])
     cdr.to_csv("dummy_data/cdr.csv", index=False)
