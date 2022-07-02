@@ -7,7 +7,7 @@ from shapely.geometry import Point
 def get_cells(area):
     header = ["radio", "mcc", "mnc", "lac", "cid", "?", "lon", "lat", "range",
               "samples", "changeable", "created", "updated", "avg_signal"]
-    opencellid = pd.read_csv("input/216.csv", names=header)
+    opencellid = pd.read_csv("input/216.csv.gz", names=header)
 
     # create geometry table
     opencellid["point_tuple"] = tuple(zip(opencellid["lon"], opencellid["lat"]))
