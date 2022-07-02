@@ -71,12 +71,35 @@ def generate_dummy_cdr(cells):
     return df.sort_values("timestamp")
 
 
+def generate_dummy_device_table(size):
+    """
+    Generating dummy device/SIM data.
+
+    - Customer type is allways set to [C]onsumer
+        - no [B]usiness subscription is generated.
+    - Subscription type is pr[E]paid or p[O]stpaid with the ratio of 3:7.
+    - The generator do not deal with Type Allocation Codes; all set to NaN.
+    - Age is generated between 15 and 85, or NaN.
+    - Gender is [F]emale, [M]ale or NaN with equal probability.
+    """
+    df = pd.DataFrame({
+        "device_id": list(range(1, size+1)),
+        "customer_type": ["C"] * size,
+        "subscription_type": np.random.choice(["E", "O"], p=[0.3, 0.7], size=size),
+        "tac": [np.NaN] * size,
+        "age": np.random.choice(list(range(15, 85))+[np.NaN], p=[0.01]*70+[0.3], size=size),
+        "sex": np.random.choice(["F", "M", np.NaN], size=size),
+    })
+
+    return df
+
+
 if __name__ == "__main__":
     # make the script deterministic
     np.random.seed(42)
 
     DAYS = [1, 2, 3, 4, 5, 6, 7]
-    SIZE = 100
+    SIZE = 10000
     # to mimick the daily distribution,
     # use the following weight for the hour generation
     HOUR_WEIGHT = np.array([4, 3, 2, 1, 1, 2, 2, 3, 4, 6, 7, 8, 9, 8, 8, 8, 9, 9,
@@ -88,3 +111,6 @@ if __name__ == "__main__":
     cells.to_csv("dummy_data/cells.csv", index=False)
     cdr = generate_dummy_cdr(cells["cid"])
     cdr.to_csv("dummy_data/cdr.csv", index=False)
+
+    devices = generate_dummy_device_table(SIZE)
+    devices.to_csv("dummy_data/device.csv", index=False)
