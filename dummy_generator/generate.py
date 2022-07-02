@@ -4,6 +4,26 @@ import numpy as np
 from shapely.geometry import Point
 
 
+def get_cells(area):
+    header = ["radio", "mcc", "mnc", "lac", "cid", "?", "lon", "lat", "range",
+              "samples", "changeable", "created", "updated", "avg_signal"]
+    opencellid = pd.read_csv("input/216.csv", names=header)
+
+    # create geometry table
+    opencellid["point_tuple"] = tuple(zip(opencellid["lon"], opencellid["lat"]))
+    opencellid["geometry"] = opencellid["point_tuple"].apply(Point)
+    cells = gpd.GeoDataFrame(opencellid, geometry="geometry", crs=4326)
+
+    # filter to Vodafone cells and remove 4G
+    cells = cells.query("mnc == 70 & radio != 'LTE'").copy()
+    # keep cells with at least 250 samples from Budapest
+    cells = cells.query("geometry.intersects(@area) & samples >= 250").copy()
+
+    # drop unnecessary columns
+    cells = cells.drop(["?", "changeable", "avg_signal", "point_tuple"], axis=1)
+    return cells
+
+
 def generate_timstamp(day, size, p):
     hh = np.random.choice(range(24), size=size, p=p)
     mm = np.random.choice(range(60), size=size)
@@ -64,6 +84,7 @@ if __name__ == "__main__":
 
     budapest = gpd.read_file("input/budapest_border.geojson", crs=4326)
 
-    cells = pd.read_csv("dummy_data/cells.csv")
+    cells = get_cells(budapest.geometry[0])
+    cells.to_csv("dummy_data/cells.csv", index=False)
     cdr = generate_dummy_cdr(cells["cid"])
     cdr.to_csv("dummy_data/cdr.csv", index=False)
