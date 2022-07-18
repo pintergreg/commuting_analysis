@@ -48,8 +48,8 @@ def choose_cells(cells, size):
     s2 = np.random.choice(cells)
     n = len(cells)
     weight = np.ones(n)
-    weight[np.where(cells == s1)[0][0]] = np.random.randint(n, high=n*5)
-    weight[np.where(cells == s2)[0][0]] = np.random.randint(n, high=n*8)
+    weight[np.where(cells == s1)[0][0]] = np.random.randint(n*0.01, high=n*0.05)
+    weight[np.where(cells == s2)[0][0]] = np.random.randint(n*0.01, high=n*0.1)
     p = weight/sum(weight)
     return np.random.choice(cells, size=size, p=p)
 
