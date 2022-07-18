@@ -2,6 +2,7 @@ import pandas as pd
 import geopandas as gpd
 import numpy as np
 from shapely.geometry import Point
+from pathlib import Path
 
 
 def get_cells(area):
@@ -106,6 +107,8 @@ if __name__ == "__main__":
                             9, 8, 6, 5, 4, 3])
 
     area = gpd.read_file("input/agglomeration_border.geojson", crs=4326)
+
+    Path("dummy_data").mkdir(exist_ok=True)
 
     cells = get_cells(area.geometry[0])
     cells.to_csv("dummy_data/cells.csv", index=False)
