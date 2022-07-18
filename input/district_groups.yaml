@@ -1,0 +1,7 @@
+north-buda: [1, 2, 3, 12]
+south-buda: [11, 22]
+north-pest: [4, 13]
+inner-pest: [5, 6, 7, 8]
+eastern-pest_inner: [10, 14]
+eastern-pest_outer: [15, 16, 17, 18, 19]
+south-pest: [9, 20, 21, 23]
