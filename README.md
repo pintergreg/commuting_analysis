@@ -61,12 +61,12 @@ erDiagram
 ## Merge Cells Notebook
 
 - Demonstrate the cell merging using DBSCAN algorithm
-- Plot Figure 5
+- Plot Figure 6
 
 
 ## Home-Work Notebook
 
-- Plot Figure 7, 9, 10, 12, 13, 14
+- Plot Figure 8, 10, 11, 13, 14, 15
 
 
 ## Software Requirements
